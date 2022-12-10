@@ -39,7 +39,7 @@ void tcp_client_send(String message)
     delay(5000);
 }
 
-void tcp_client_send_buffer(char *message)
+void tcp_client_send_buffer(char *message, int length)
 {
     if (!client.connect(host, port))
     {
@@ -48,7 +48,7 @@ void tcp_client_send_buffer(char *message)
         return;
     }
     Serial.println("Connected to server successful!");
-    client.write(message);
+    client.write(message, length);
     delay(250);
     while (client.available() > 0)
     {
