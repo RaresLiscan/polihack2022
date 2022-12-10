@@ -14,6 +14,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  tcp_client_send("Test");
+  int8_t buffer[] = {1, 2, 3, 4};
+  tcp_client_send_buffer((char *)buffer);
 
 }

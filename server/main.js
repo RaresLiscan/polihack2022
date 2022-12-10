@@ -1,4 +1,5 @@
 const net = require("net");
+const { sendData } = require("./websocket");
 
 const port = 7070;
 const host = "192.168.137.1";
@@ -13,12 +14,12 @@ server.on("connection", function (sock) {
 
   sock.on("data", function (data) {
     console.log("DATA " + sock.remoteAddress + ": " + data);
-    // Write the data back to all the connected, the client will receive it as data from the server
-    sockets.forEach(function (sock, index, array) {
-      sock.write(
-        sock.remoteAddress + ":" + sock.remotePort + " said " + data + "\n"
-      );
-    });
+    console.log([...data]);
+    sendData([...data]);
+  });
+
+  sock.on("error", function (error) {
+    console.error(error);
   });
 });
 
