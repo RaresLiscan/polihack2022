@@ -25,7 +25,7 @@ void loop()
   char buffer[3] = {humidityValue, rainSensorValue >> 8, rainSensorValue & 0xff};
 
   tcp_client_send_buffer(buffer, 3);
-  delay(1500);
+  delay(200);
 
   int rainSensor = rain_sensor_read_digital();
   Serial.println(rainSensor);

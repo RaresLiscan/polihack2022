@@ -9,33 +9,14 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import useWebSocket from "./useWebSocket";
 
 let index = 0;
 let started = 0;
 
 export default function Dashboard() {
-  const [data, setData] = useState([
-    { name: "Page A", uv: 4000 },
-    { name: "Page B", uv: 3000 },
-    { name: "Page C", uv: 2000 },
-    { name: "Page D" },
-    { name: "Page E", uv: 1890 },
-    { name: "Page F", uv: 2390 },
-    { name: "Page G", uv: 3490 },
-  ]);
-
-  useEffect(() => {
-    if (!started) {
-      setInterval(() => {
-        setData((prevData) => [
-          ...prevData,
-          { name: `Page ${index}`, uv: 3600 + 10 * index },
-        ]);
-        index++;
-      }, 1000);
-      started = 1;
-    }
-  }, []);
+  const websocket = useWebSocket();
+  console.log("websocket: ", websocket);
 
   return (
     <div style={{ width: "100%" }}>
@@ -44,7 +25,7 @@ export default function Dashboard() {
         <LineChart
           width={500}
           height={200}
-          data={data}
+          data={websocket}
           margin={{
             top: 10,
             right: 30,
@@ -53,16 +34,46 @@ export default function Dashboard() {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="at" />
           <YAxis />
           <Tooltip />
           <Line
             connectNulls
             isAnimationActive={false}
             type="monotone"
-            dataKey="uv"
+            dataKey="humidity"
             stroke="#8884d8"
             fill="#8884d8"
+            dot={false}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+
+      <h1>Rain intensity chart</h1>
+      <ResponsiveContainer width="100%" height={200}>
+        <LineChart
+          width={500}
+          height={200}
+          data={websocket}
+          margin={{
+            top: 10,
+            right: 30,
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="at" />
+          <YAxis />
+          <Tooltip />
+          <Line
+            connectNulls
+            isAnimationActive={false}
+            type="monotone"
+            dataKey="rainCoefficient"
+            stroke="#8884d8"
+            fill="#8884d8"
+            dot={false}
           />
         </LineChart>
       </ResponsiveContainer>

@@ -1,7 +1,18 @@
 let started = false;
 
+let listeners = [];
+
+let lastWebsocketData = [];
+
+export function getLastWebsocketData() {
+  return lastWebsocketData;
+}
+
+export function subscribe(listener) {
+  listeners.push(listener);
+}
+
 export function initWebSocket() {
-  console.log("started: ", started);
   if (started) {
     return;
   }
@@ -14,6 +25,8 @@ export function initWebSocket() {
   ws.onmessage = (message) => {
     // console.log(`Received message: ${message.target}`);
     const json = JSON.parse(message.data);
+    listeners.forEach((listener) => listener(json));
+    lastWebsocketData = json;
     console.log("json: ", json);
   };
 

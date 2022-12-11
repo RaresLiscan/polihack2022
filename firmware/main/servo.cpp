@@ -6,6 +6,7 @@ Servo servo;
 
 void servo_init(int pin)
 {
+    servo.write(0);
     servo.attach(pin);
 }
 

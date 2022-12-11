@@ -2,11 +2,13 @@ const net = require("net");
 const { sendData } = require("./websocket");
 
 const port = 7070;
-const host = "192.168.123.27";
+const host = "0.0.0.0";
 
 const server = net.createServer();
 
 let sockets = [];
+
+let websocketData = [];
 
 server.on("connection", function (sock) {
   console.log("CONNECTED: " + sock.remoteAddress + ":" + sock.remotePort);
@@ -18,7 +20,13 @@ server.on("connection", function (sock) {
     const sensorsData = [...data];
     const humidity = sensorsData[0];
     const rainCoefficient = (sensorsData[1] << 8) + sensorsData[2];
-    sendData([humidity, rainCoefficient]);
+    websocketData.push({
+      from: sock.remoteAddress,
+      humidity,
+      rainCoefficient: Math.abs(1024 - rainCoefficient),
+      at: new Date().toISOString().substring(11, 19),
+    });
+    sendData(websocketData);
   });
 
   sock.on("error", function (error) {

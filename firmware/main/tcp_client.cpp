@@ -14,8 +14,10 @@ void tcp_client_setup()
     while (WiFi.status() != WL_CONNECTED)
     {
         delay(500);
-        Serial.print(".");
+        Serial.println("Connecting...");
     }
+
+    Serial.println("Connected to wifi!");
 }
 
 void tcp_client_send(String message)
@@ -49,13 +51,6 @@ void tcp_client_send_buffer(char *message, int length)
     }
     Serial.println("Connected to server successful!");
     client.write(message, length);
-    delay(250);
-    while (client.available() > 0)
-    {
-        char c = client.read();
-        Serial.write(c);
-    }
-    Serial.print('\n');
     client.stop();
-    delay(5000);
+    // delay(5000);
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
@@ -11,16 +11,19 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Devices from "./Devices";
 import Dashboard from "./Dashboard";
+import { initWebSocket } from "./websocket";
 
 const drawerWidth = 240;
 
 export default function App() {
   const [page, setPage] = useState(0);
-  console.log("page: ", page);
+
+  useEffect(() => {
+    initWebSocket();
+  }, []);
 
   return (
     <Box sx={{ display: "flex" }}>
