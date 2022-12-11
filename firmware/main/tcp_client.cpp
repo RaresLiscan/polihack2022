@@ -48,7 +48,7 @@ void tcp_client_send_buffer(char *message)
         return;
     }
     Serial.println("Connected to server successful!");
-    client.write(message);
+    client.write(message, 4);
     delay(250);
     while (client.available() > 0)
     {
